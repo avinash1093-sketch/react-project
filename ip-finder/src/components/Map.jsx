@@ -1,10 +1,11 @@
 // Map.js
 
 import React, { useEffect, useState } from 'react';
-import ReactMapGL, { Marker } from 'react-map-gl';
+import ReactMapGL, { Marker } from 'react-map-gl/mapbox';
 import { RiUserLocationFill } from 'react-icons/ri';
 
-const API_KEY = '<YOUR_API_KEY>';
+
+const apiKey = import.meta.env.VITE_API_KEY;
 
 const Map = ({ lat, lon }) => {
 
@@ -31,7 +32,7 @@ const Map = ({ lat, lon }) => {
     return (
         <div className="map">
             <ReactMapGL
-                mapboxApiAccessToken={API_KEY}
+                mapboxAccessToken={apiKey}
                 {...viewport}
                 onViewportChange={(viewport) => setViewport(viewport)}
                 mapStyle="mapbox://styles/mapbox/streets-v11">
