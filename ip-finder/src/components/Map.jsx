@@ -27,7 +27,7 @@ const Map = ({ lat, lon }) => {
         a.latitude = lat;
         a.longitude = lon;
         setViewport(a);
-    }, [lat, lon]);
+    }, [lat, lon, viewport]);
 
     return (
         <div className="map">
