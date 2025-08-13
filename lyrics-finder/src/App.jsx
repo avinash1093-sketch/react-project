@@ -16,15 +16,19 @@ function App() {
     setError('');
     setLyrics('Loading...');
     try {
-      // Example using lyrics.ovh API with CORS proxy
-      const response = await Axios.get(
-        `/v1/${artistName}/${songName}`,
-      );
-      setLyrics(response.data.lyrics || "No lyrics found.");
-    } catch (err) {
+      const response = await Axios.get(`http://localhost:3000/lyrics/${songName}/${artistName}`);
+      const data = response.data;
+      console.log(data)
+      if (data.lyrics) {
+        setLyrics(data.lyrics || "No lyrics found.");
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
       setLyrics('');
       setError('Failed to fetch lyrics. CORS or network error.');
     }
+
   }
 
   return (
@@ -35,7 +39,7 @@ function App() {
         <input className='song' type='text' placeholder='Song Name' onChange={(e) => { setSongName(e.target.value) }} />
         <button className="btn" onClick={() => searchLyrics()}>Search</button>
         <hr />
-        {error && <div style={{color: 'red'}}>{error}</div>}
+        {error && <div style={{ color: 'red' }}>{error}</div>}
         <pre>{lyrics}</pre>
       </div>
     </>
