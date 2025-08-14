@@ -1,49 +1,32 @@
-import { useState } from 'react'
-import Axios from "axios";
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/navbar/Navbar';
+import LyricsFinder from "./components/lyricsFinder/LyricsFinder";
+import Home from "./components/home/Home";
+import AddLyrics from "./components/addLyrics/AddLyrics";
+import About from './components/about/About';
+import Contact from './components/contacts/Contact';
+import Footer from './components/footer/Foter';
+
+
+
 
 function App() {
-  const [artistName, setArtistName] = useState('');
-  const [songName, setSongName] = useState('');
-  const [lyrics, setLyrics] = useState('');
-  const [error, setError] = useState('');
-
-  let searchLyrics = async () => {
-    if (artistName === "" || songName === "") {
-      setError("Please enter both artist and song name.");
-      return;
-    }
-    setError('');
-    setLyrics('Loading...');
-    try {
-      const response = await Axios.get(`http://localhost:3000/lyrics/${songName}/${artistName}`);
-      const data = response.data;
-      console.log(data)
-      if (data.lyrics) {
-        setLyrics(data.lyrics || "No lyrics found.");
-      } else {
-        console.error(data.error);
-      }
-    } catch (error) {
-      setLyrics('');
-      setError('Failed to fetch lyrics. CORS or network error.');
-    }
-
-  }
-
   return (
     <>
-      <div className='lyrics-app'>
-        <h1>Lyrics Finder</h1>
-        <input className='artist' type='text' placeholder='Artist Name' onChange={(e) => { setArtistName(e.target.value) }} />
-        <input className='song' type='text' placeholder='Song Name' onChange={(e) => { setSongName(e.target.value) }} />
-        <button className="btn" onClick={() => searchLyrics()}>Search</button>
-        <hr />
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-        <pre>{lyrics}</pre>
-      </div>
+      <Router>
+        <Navbar /> 
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path='/lyrics' element={<LyricsFinder/>} />
+          <Route path='/addLyrics' element={<AddLyrics/>} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+        <Footer />
+      </Router>
     </>
-  )
+  );
 }
 
 export default App;
